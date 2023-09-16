@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+    <!--This is the bean definition that defines where the program would be retrieving its data.
+        This makes Spring projects versatile. Many times a project could be started without knowing
+        exactly how the data should be managed. If you decide to not do a local SQLite database as
+        your data source later, you just need to change the dataSource bean with the relevant
+        dependencies and properties configured and add another DAO class implementation for it.
+
+        The concept of layering is seen in this project. The Dao classes only manages retrieval or
+        sending of information to the dataSource. The service class accesses the Dao classes to do
+        the service it needs to accomplish. So if you changed the dataSource, there is no need of
+        changing the service classes at all. This is the benefit of the Single Responsibility
+        principle. You will see in part 2 of the Spring Lab how this allows migrating to Hibernate.
+
+        Notice how this bean definition uses setter injection. The fields driverClassName
+        and url are injected with String values allowing the bean to know what JDBC driver to use and
+        where the database is located. Additional fields like a login required to access the DB can be
+        initialized here.
+        TODO: Delete this comment block to acknowledge that you have read it (and to make the code cleaner).-->
+    <bean id="dataSource"
+          class = "org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name = "driverClassName" value = "org.sqlite.JDBC"/>
+        <property name = "url" value = "jdbc:sqlite:data.sqlite"/>
+    </bean>
+
+    <!--This bean definition instantiates a JdbcTemplate class bean. Notice that it setter
+        injects the dataSource bean. Think of this as saving what is needed to access the dataSource
+        into JdbcTemplate so it can always access the database and know how to open the connection.
+        TODO: Delete this comment block to acknowledge that you have read it (and to make the code cleaner).-->
+    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <!--As you follow through the tutorial, add additional bean definitions below-->
+
+</beans>

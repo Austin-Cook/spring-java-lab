@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+    <!--TODO: Insert the Mocked classDAO here-->
+
+    <!--A list of the new classes to be "placed in the server" via mocking-->
+    <util:list id="classes">
+        <ref bean="EE300"/>
+        <ref bean="PH201"/>
+    </util:list>
+    <bean id="EE300" class="model.Class">
+        <constructor-arg value="10001"/>
+        <constructor-arg value="EE300"/>
+        <constructor-arg value="Room 0"/>
+        <constructor-arg value="Dr. Junior"/>
+    </bean>
+    <bean id="PH201" class="model.Class">
+        <property name="classID" value="10000"/>
+        <property name="className" value="PH201"/>
+        <property name="room" value="Room 1"/>
+        <property name="professor" value="Dr. Evil"/>
+    </bean>
+
+    <!--A list of the report of the classes students completed, to find the correct new class they should take-->
+    <util:list id="newClasses" >
+        <bean class="service.response.StudentNewClass">
+            <constructor-arg value="12345"/>
+            <constructor-arg value="C. Brown"/>
+            <constructor-arg value="12 Apple St."/>
+            <constructor-arg value="555-1234"/>
+            <constructor-arg value="EE200"/>
+            <constructor-arg value="C"/>
+            <constructor-arg value="EE300"/>
+        </bean>
+        <bean class="service.response.StudentNewClass">
+            <constructor-arg value="67890"/>
+            <constructor-arg value="L. Van Pelt"/>
+            <constructor-arg value="34 Pear Ave."/>
+            <constructor-arg value="555-5678"/>
+            <constructor-arg value="PH100"/>
+            <constructor-arg value="C+"/>
+            <constructor-arg value="PH201"/>
+        </bean>
+    </util:list>
+
+    <!--The object which classDAO should return when queried by class name: "EE300"-->
+    <util:list id="classList1">
+        <bean class="model.Class">
+            <constructor-arg value="10001"/>
+            <constructor-arg value="EE300"/>
+            <constructor-arg value="Room 0"/>
+            <constructor-arg value="Dr. Junior"/>
+        </bean>
+    </util:list>
+
+    <!--The object which classDAO should return when queried by class name: "PH201"-->
+    <util:list id="classList2">
+        <bean id="class2" class="model.Class">
+            <property name="classID" value="10000"/>
+            <property name="className" value="PH201"/>
+            <property name="room" value="Room 1"/>
+            <property name="professor" value="Dr. Evil"/>
+        </bean>
+    </util:list>
+</beans>
