@@ -8,7 +8,7 @@
         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
         http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
 
-    <!--TODO: Insert the Mocked classDAO here-->
+    <context:component-scan  base-package="service" />
 
     <!--A list of the new classes to be "placed in the server" via mocking-->
     <util:list id="classes">
@@ -69,4 +69,9 @@
             <property name="professor" value="Dr. Evil"/>
         </bean>
     </util:list>
+
+    <bean id="classDAO" class="org.mockito.Mockito" factory-method="mock">
+        <constructor-arg value="dao.ClassDAO" />
+    </bean>
+
 </beans>

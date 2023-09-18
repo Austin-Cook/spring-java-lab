@@ -6,6 +6,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
+import org.springframework.stereotype.Component;
 import service.response.StudentGrade;
 import service.response.StudentNewClass;
 
@@ -13,6 +14,7 @@ import java.io.File;
 import java.util.List;
 import java.util.Objects;
 
+@Component
 public class ClassDAOImpl implements ClassDAO {
     JdbcTemplate jdbcTemplate;
 

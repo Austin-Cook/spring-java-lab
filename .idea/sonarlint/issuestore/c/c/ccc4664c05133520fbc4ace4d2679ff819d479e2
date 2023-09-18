@@ -1,0 +1,6 @@
+
+m	java:S1279"XRefactor the code in order to not assign to this loop counter from within the loop body.(Â¨•ù
+S	java:S106""9Replace this use of System.out or System.err by a logger.(ôûÏÏÿÿÿÿÿ
+S	java:S106$"9Replace this use of System.out or System.err by a logger.(®íø¶øÿÿÿÿ
+?
+java:S54138")Verify that "remove()" is used correctly.(ù™’ì
