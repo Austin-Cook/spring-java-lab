@@ -3,12 +3,14 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:util="http://www.springframework.org/schema/util"
-       xsi:schemaLocation="
-        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
-        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
 
-    <context:component-scan  base-package="dao,service" />
+<!--    <context:component-scan  base-package="dao,service" />-->
+    <context:component-scan  base-package="dao" />
 
     <!--This is the bean definition that defines where the program would be retrieving its data.
         This makes Spring projects versatile. Many times a project could be started without knowing
@@ -26,11 +28,34 @@
         and url are injected with String values allowing the bean to know what JDBC driver to use and
         where the database is located. Additional fields like a login required to access the DB can be
         initialized here.-->
+<!--    <bean id="dataSource"-->
+<!--          class = "org.springframework.jdbc.datasource.DriverManagerDataSource">-->
+<!--        <property name = "driverClassName" value = "org.sqlite.JDBC"/>-->
+<!--        <property name = "url" value = "jdbc:sqlite:data.sqlite"/>-->
+<!--    </bean>-->
     <bean id="dataSource"
           class = "org.springframework.jdbc.datasource.DriverManagerDataSource">
-        <property name = "driverClassName" value = "org.sqlite.JDBC"/>
-        <property name = "url" value = "jdbc:sqlite:data.sqlite"/>
+        <property name = "driverClassName" value = "com.mysql.cj.jdbc.Driver"/>
+        <property name = "url" value = "jdbc:mysql://localhost:3306/studentdb"/>
+        <property name="username" value="root"/>
+        <property name="password" value="rKiQ4&#36;&#38;N&#35;&#33;MR&#94;qN"/>
     </bean>
+
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="annotatedClasses">
+            <list>
+                <value>model.Student</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="transactionManager"
+          class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+
+    <tx:annotation-driven/>
 
     <!--This bean definition instantiates a JdbcTemplate class bean. Notice that it setter
         injects the dataSource bean. Think of this as saving what is needed to access the dataSource
@@ -89,4 +114,13 @@
 <!--        </property>-->
 <!--    </bean>-->
 
+    <bean id="loggerAspect" class="aspect.LoggerAspect"/>
+
+    <aop:config>
+        <aop:aspect ref="loggerAspect">
+            <aop:pointcut id="daoMethod" expression="execution(* dao.*.*(..))"/>
+<!--            <aop:after-returning method="logReturn" returning="returnValue" pointcut-ref="daoMethod"/>-->
+            <aop:around method="logDAO" pointcut-ref="daoMethod" />
+        </aop:aspect>
+    </aop:config>
 </beans>

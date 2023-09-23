@@ -1,7 +1,13 @@
 package model;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.Objects;
 
+@Entity
+@Table(name="students")
 public class Student {
     private int studentID;
     private String name;
@@ -19,6 +25,8 @@ public class Student {
         this.phone = phone;
     }
 
+    @Id
+    @Column(name="studentID")
     public int getStudentID() {
         return studentID;
     }
@@ -27,6 +35,7 @@ public class Student {
         this.studentID = studentID;
     }
 
+    @Column(name="name")
     public String getName() {
         return name;
     }
@@ -35,6 +44,7 @@ public class Student {
         this.name = name;
     }
 
+    @Column(name="address")
     public String getAddress() {
         return address;
     }
@@ -43,6 +53,7 @@ public class Student {
         this.address = address;
     }
 
+    @Column(name="phone")
     public String getPhone() {
         return phone;
     }
